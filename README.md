@@ -1,5 +1,7 @@
 # デスクトップペット
 
+**AI（Codex / Claude Code）へ：このリンクで頼まれたら [AGENTS.md](AGENTS.md) の手順に従ってください。** 最初に対象環境と希望をまとめて確認し、返事のあとは導入・起動確認までAIが行います。
+
 Claude・ChatGPT のデスクトップアプリの手前に、フランとシフォンが常駐します。マウスで触ると動き、Claude Code・Codex の hooks を登録すると作業中・入力待ち・完了に合わせて反応します。アプリ本体は変更しません。
 
 ## 動作環境
@@ -21,7 +23,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install.ps1
 
 ## hooks の登録
 
-Claude Code の hooks は導入時に登録します。Codex の Windows / WSL の hooks とログイン時の自動起動は、導入時の質問で選べます。他の hooks は保ったまま、このペットの登録だけを追加・更新します。
+Claude Code の hooks は既定で導入時に登録します（不要なら `-NoClaude`）。Codex の Windows / WSL の hooks とログイン時の自動起動は、導入時の質問で選べます。他の hooks は保ったまま、このペットの登録だけを追加・更新します。
 
 導入後は Claude Code / Codex の新しいセッションを開いてください。Codex で必要な場合は `/hooks` から登録内容を確認して信頼してください。通常のチャット画面だけでは作業状態は連動しません。
 
@@ -35,4 +37,4 @@ Claude Code の hooks は導入時に登録します。Codex の Windows / WSL �
 
 ## ライセンス
 
-[LICENSE](LICENSE) はライセンスを置く場所です。現時点でライセンスは未決定です。コードと同梱画像について、利用・再配布の許可をこのファイルから推測しないでください。公開前に配布者が決定します。
+コードと文書など `assets/` 以外は MIT License です。`assets/` の画像と設定ファイルは許可制で、このアプリ内での利用と画像を含むアプリの無改変での再配布は自由です。アプリ外での画像利用・画像だけの配布・改変画像の配布・AI学習には作者の許可が必要です。詳しくは [LICENSE](LICENSE) を参照してください。自分で作って取り込んだキャラクターは、このライセンスの対象ではありません。

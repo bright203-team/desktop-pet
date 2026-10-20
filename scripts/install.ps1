@@ -1,6 +1,6 @@
 param(
     [switch]$Yes, [switch]$NoCodex, [switch]$CodexWindows, [switch]$CodexWsl,
-    [switch]$Autostart, [switch]$NoStart,
+    [switch]$Autostart, [switch]$NoStart, [switch]$NoClaude,
     [string]$ClaudeSettingsPath = (Join-Path $env:USERPROFILE '.claude/settings.json'),
     [string]$CodexSettingsPath = (Join-Path $env:USERPROFILE '.codex/hooks.json'),
     [string]$WslSettingsPath = '',
@@ -51,8 +51,10 @@ function Save-Target($kind, $path) {
     $script:targets = @($script:targets | Where-Object { !($_.kind -eq $kind -and $_.path -eq $path) }) + @(@{kind=$kind;path=$path})
     @{targets=$script:targets} | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $manifestPath -Encoding UTF8
 }
-Update-PetHooks $app 'add' $ClaudeSettingsPath 'claude' (Join-Path $source 'scripts/pet/state-hook.mjs')
-Save-Target 'claude' $ClaudeSettingsPath
+if (!$NoClaude) {
+    Update-PetHooks $app 'add' $ClaudeSettingsPath 'claude' (Join-Path $source 'scripts/pet/state-hook.mjs')
+    Save-Target 'claude' $ClaudeSettingsPath
+}
 if ($windows) {
     Update-PetHooks $app 'add' $CodexSettingsPath 'codex' (Join-Path $source 'scripts/pet/codex-hook.mjs')
     Save-Target 'codex' $CodexSettingsPath
