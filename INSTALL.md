@@ -23,7 +23,7 @@ Claude Code の hooks を登録します。Codex Windows・Codex WSL・ログイ
 powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install.ps1 -Yes -CodexWindows -Autostart
 ```
 
-`-CodexWsl` で WSL の Codex も登録できます。`-NoCodex` は Codex の新しい登録を省きます。`-Yes` だけなら任意項目を追加しません。以前の登録は維持します。`-NoStart` は導入後の起動を省きます。
+`-CodexWsl` で WSL の Codex も登録できます。`-NoClaude` は Claude Code、`-NoCodex` は Codex の新しい登録を省きます。連動なしなら `-Yes -NoClaude -NoCodex` を付けます。`-Yes` だけなら任意項目を追加しません。以前の登録は維持します。`-NoStart` は導入後の起動を省きます。
 
 導入先は `%USERPROFILE%/.claude-desktop-pet/app/` です。両方のキャラ・絵・Python の環境・起動スクリプトをここに置きます。開発用のハーネスは不要です。導入はこのユーザーの Claude Code の設定を編集し、選択した場合は Codex の設定と自動起動も登録します。他の hooks は残します。
 
