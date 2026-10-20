@@ -1,0 +1,189 @@
+{
+  "idle_blink": {
+    "file": "01_まばたき.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      1600,
+      180,
+      90,
+      150,
+      600,
+      900
+    ]
+  },
+  "idle_smug": {
+    "file": "02_なまいき.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      650,
+      200,
+      450,
+      650,
+      200,
+      450
+    ]
+  },
+  "idle_peek": {
+    "file": "03_のぞきこむ.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      500,
+      200,
+      350,
+      1000,
+      350,
+      500
+    ]
+  },
+  "idle_play": {
+    "file": "04_遊びだす.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      500,
+      250,
+      350,
+      600,
+      350,
+      500
+    ]
+  },
+  "idle_sleep": {
+    "file": "05_寝る.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      800,
+      700,
+      500,
+      700,
+      500,
+      3000
+    ]
+  },
+  "hover": {
+    "file": "06_マウスオーバー_片手を振る.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      500,
+      200,
+      220,
+      220,
+      220,
+      400
+    ]
+  },
+  "click": {
+    "file": "07_クリック_ハートジャンプ.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      200,
+      180,
+      220,
+      180,
+      180,
+      700
+    ]
+  },
+  "offline": {
+    "file": "08_接続不可_布団で寝る.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      500,
+      500,
+      500,
+      500,
+      500,
+      500
+    ]
+  },
+  "waiting": {
+    "file": "09_返事許可待ち_指つんつん.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      350,
+      150,
+      250,
+      150,
+      350,
+      150
+    ]
+  },
+  "working": {
+    "file": "10_作業中_PCと汗.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200
+    ]
+  },
+  "done": {
+    "file": "11_作業完了_ピース.png",
+    "columns": 3,
+    "rows": 2,
+    "frames": 6,
+    "durations": [
+      400,
+      300,
+      300,
+      450,
+      450,
+      450
+    ]
+  },
+  "drag_right": {
+    "file": "12_ドラッグ中_右へ小走り.png",
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "durations": [
+      120,
+      120,
+      120,
+      120,
+      120,
+      120,
+      120,
+      120
+    ]
+  },
+  "drag_left": {
+    "file": "12_ドラッグ中_右へ小走り.png",
+    "columns": 4,
+    "rows": 2,
+    "frames": 8,
+    "durations": [
+      120,
+      120,
+      120,
+      120,
+      120,
+      120,
+      120,
+      120
+    ],
+    "mirror": true
+  }
+}
