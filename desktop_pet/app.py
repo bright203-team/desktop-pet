@@ -10,6 +10,7 @@ from .sprites import Sprites
 from .theme import application_icon
 from .scene_runtime import SceneController
 from .state import StateWatcher, NoStateWatcher, state_path
+from .integration import LinkTest
 from .caption import Caption, HEIGHT, FRAME_SECONDS
 from .aura import AuraWindow
 
@@ -71,8 +72,11 @@ class Pet(QWidget):
     def configure_watcher(self):
         self.state_watcher=(NoStateWatcher() if self.config.source=='none' else
                             StateWatcher(self.controller,state_path(self.config.source),read_interval=0.25))
+        self.link_test=LinkTest(self.controller,self.state_watcher)
 
     def reload(self, config=None, force_sprites=False):
+        if hasattr(self,'link_test'):
+            self.link_test.cancel()
         previous=getattr(self,'config',None)
         self.config=config if isinstance(config,Config) else Config.load(config_path(self.root))
         self.controller.config=self.config
@@ -102,6 +106,7 @@ class Pet(QWidget):
             self.timer.start(0)
 
     def stop(self):
+        self.link_test.cancel()
         self.timer.stop()
         self.aura.hide()
         getattr(self.backend,'unwatch',lambda: None)()
@@ -167,6 +172,10 @@ class Pet(QWidget):
         if hasattr(self,'timer'):
             self.timer.start(0)
 
+    def start_link_test(self):
+        self.link_test.start()
+        self.timer.start(0)
+
     def tick(self, refresh=True):
         now_seconds=time.monotonic()
         if refresh or now_seconds>=self.geometry_at:
@@ -185,6 +194,7 @@ class Pet(QWidget):
         if refresh or now_seconds>=self.state_at:
             self.state_at=now_seconds+0.25
             self.state_watcher.poll(foreground)
+        self.link_test.advance()
         if now_seconds>=getattr(self,'connection_at',0):
             self.connected=getattr(self.backend,'connected',lambda: True)()
             self.connection_at=now_seconds+2
@@ -208,6 +218,8 @@ class Pet(QWidget):
             self.show()
             self.attach_target(target)
         state=self.scenes.update(self.controller,getattr(self,'connected',True),self.hovering)
+        if self.link_test.active:
+            state=('working','waiting','done')[self.link_test.index]
         if not self.sprites.scene_format and self.controller.base_state == 'failed' and state == 'working':
             state='offline'  # Keep the original Codex Pets failed row.
         sequence=self.sprites.for_scene(state,self.controller.expression)

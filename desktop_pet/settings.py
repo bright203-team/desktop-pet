@@ -15,6 +15,7 @@ from .theme import ThemedDialog, portrait, application_icon
 from .startup import StartupShortcut
 from .character_dialog import CharacterDialog, confirm_incoming
 from .preview import AnimationPreview
+from .integration import integration_statuses, CODEX_GUIDE, CLAUDE_GUIDE
 from .app import Pet
 from .model import config_path, ROOT, Config, load_configs, save_configs, normalize_configs, BUILTIN_IDS
 
@@ -176,6 +177,22 @@ class SettingsDialog(ThemedDialog):
         preview=QPushButton('アニメのプレビュー…')
         preview.clicked.connect(self.animation_preview)
         form.addRow(preview)
+        self.link_status_labels=[]
+        self.link_help_buttons=[]
+        for index,label in enumerate(('Claude Code','Codex Windows','Codex WSL')):
+            status=QLabel(); status.setWordWrap(True)
+            form.addRow(label,status)
+            help_button=QPushButton('確認手順…')
+            help_button.clicked.connect(lambda checked=False,i=index: self.integration_help(i))
+            form.addRow(help_button)
+            self.link_status_labels.append(status)
+            self.link_help_buttons.append(help_button)
+        self.link_button=QPushButton('連携テスト')
+        self.link_button.clicked.connect(self.test_integration)
+        form.addRow(self.link_button)
+        self.link_hint=QLabel('選択したキャラで作業中 → 返事待ち → 完了を各3秒表示します。終了後は元の状態（途中の実通知があれば最新）に戻ります。キャラを表示し、表示先のアプリを開いてください。連携テストは見た目の確認です。実際の通知の受信は上の時刻で確かめてください。')
+        self.link_hint.setWordWrap(True)
+        form.addRow(self.link_hint)
         buttons.removeWidget(self.remove_button)
         form.addRow(self.remove_button)
         self.error=QLabel()
@@ -190,6 +207,41 @@ class SettingsDialog(ThemedDialog):
         self.incoming_timer.setInterval(2000)
         self.incoming_timer.timeout.connect(self.update_incoming_banner)
         self.incoming_timer.start()
+        self.link_timer=QTimer(self)
+        self.link_timer.setInterval(1000)
+        self.link_timer.timeout.connect(self.refresh_integrations)
+        self.link_timer.start()
+        self.refresh_integrations()
+
+    def refresh_integrations(self):
+        if not self.isVisible() and self.link_status_labels[0].text():
+            return
+        for status,label,button in zip(integration_statuses(self.manager.root),self.link_status_labels,self.link_help_buttons):
+            label.setText(status.text+('\n'+status.note if status.note else ''))
+            label.setToolTip(status.note)
+            button.setVisible(status.registered and status.last_received is None)
+        active=any(p.link_test.active for p in self.manager.pets.values())
+        self.link_button.setEnabled(not active and self.list.currentRow()>=0)
+        self.link_button.setText('連携テスト中…' if active else '連携テスト')
+
+    def integration_help(self, index):
+        dialog=ThemedDialog(self,root=self.manager.root)
+        dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        dialog.setWindowTitle('連携の確認手順')
+        layout=QVBoxLayout(dialog)
+        text=QLabel(CLAUDE_GUIDE if index==0 else CODEX_GUIDE)
+        text.setWordWrap(True); layout.addWidget(text)
+        close=QPushButton('閉じる'); close.clicked.connect(dialog.close); layout.addWidget(close)
+        dialog.resize(480,260)
+        dialog.show()
+
+    def test_integration(self):
+        index=self.list.currentRow()
+        if 0<=index<len(self.manager.configs):
+            pet=self.manager.pets.get(self.manager.configs[index].id)
+            if pet:
+                pet.start_link_test()
+                self.refresh_integrations()
 
     def refresh(self):
         self.refresh_startup()
@@ -216,6 +268,7 @@ class SettingsDialog(ThemedDialog):
         self.loading=False
         self.list.setCurrentRow(min(index,len(self.manager.configs)-1))
         self.select(self.list.currentRow())
+        self.refresh_integrations()
 
     def refresh_startup(self):
         try:
@@ -288,6 +341,8 @@ class SettingsDialog(ThemedDialog):
         dialog.show()
 
     def closeEvent(self, event):
+        for pet in self.manager.pets.values():
+            pet.link_test.cancel()
         for dialog in list(self.previews):
             dialog.close()
         super().closeEvent(event)
