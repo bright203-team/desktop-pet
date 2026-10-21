@@ -27,7 +27,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install.ps1 -Yes -
 
 導入先は `%USERPROFILE%/.claude-desktop-pet/app/` です。両方のキャラ・絵・Python の環境・起動スクリプトをここに置きます。開発用のハーネスは不要です。導入はこのユーザーの Claude Code の設定を編集し、選択した場合は Codex の設定と自動起動も登録します。他の hooks は残します。
 
-導入後は Claude Code・Codex のセッションを開き直してください。Codex は必要に応じて `/hooks` で確認して信頼します。通知領域のアイコンから「設定…」で連動先やキャラの大きさを選べます。
+導入後は Claude Code のセッションを開き直してください。通知領域のアイコンから「設定…」で連動先やキャラの大きさを選べます。
+
+### 導入後の必須ステップ：Codex の hooks を信頼する
+
+Codex と連動する場合は、導入のあと、Codex で `/hooks` を開き、ペット用の5つ（UserPromptSubmit・PreToolUse・PermissionRequest・PostToolUse・Stop）を信頼し、新しいセッションを始めてください。
+Codex は信頼していない hooks を実行しないため、信頼しないと連動しません。
+WSL の Codex を使う人も、WSL 側の Codex で同じ手順を行ってください。
 
 ## 起動と更新
 

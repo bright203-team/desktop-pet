@@ -69,4 +69,12 @@ if ($startup) {
 # Remember the cleanup target even when the user enables startup later in Settings.
 Save-Target 'startup' $StartupFolder
 if (!$NoStart) { & (Join-Path $app 'scripts/start.ps1') }
-Write-Output "Installed: $app. Restart Claude Code sessions; trust Codex hooks again when enabled."
+Write-Output "Installed: $app. Restart Claude Code sessions."
+if ($windows -or $wsl) {
+    Write-Output '=== REQUIRED: Trust the pet hooks in Codex ==='
+    Write-Output 'After installation, open /hooks in Codex and trust these five pet hooks:'
+    Write-Output 'UserPromptSubmit, PreToolUse, PermissionRequest, PostToolUse, Stop'
+    Write-Output 'Then start a new session. Codex does not run untrusted hooks, so the pet cannot react until you trust them.'
+    Write-Output 'For WSL Codex, repeat these steps in Codex on the WSL side.'
+    Write-Output '============================================'
+}
