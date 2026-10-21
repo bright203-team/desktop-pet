@@ -91,8 +91,15 @@ if ($LASTEXITCODE -ne 0) { throw 'Pet installation failed' }
 - 自動起動を選んだ場合は、Startupフォルダの `ClaudeDesktopPet.lnk` の実体と導入先への参照を確認します。
 - 画面確認が使えるならペットと通知領域のアイコンを確認します。表示先のClaude / ChatGPTアプリが閉じている・最小化中なら表示されないため、プロセスの起動と画面表示の確認を区別します。画面が読めない場合は未確認と明記し、導入・起動・登録の自動検査を続けます。反応の確認は新しいセッションとhooksの信頼登録後になります。
 
-## 3. 最後の報告は短く
+## 3. 導入後の必須ステップ：Codex の hooks を信頼する
 
-導入・起動・選択した連動先・自動起動の結果と、未確認があればその内容を伝えます。利用者に残る操作は「Claude Code / Codex の新しいセッションを開く」「Codexで必要なら `/hooks` で内容を確認して信頼する」だけを短く案内してください。hooksの信頼を迂回するオプションは使いません。OSの管理者承認など避けられなかった操作がある場合は、その理由を説明します。
+Codex と連動する場合は、導入のあと、Codex で `/hooks` を開き、ペット用の5つ（UserPromptSubmit・PreToolUse・PermissionRequest・PostToolUse・Stop）を信頼し、新しいセッションを始めてください。
+Codex は信頼していない hooks を実行しないため、信頼しないと連動しません。
+WSL の Codex を使う人も、WSL 側の Codex で同じ手順を行ってください。
+AI は最後の報告で、この手順を必ず利用者に案内してください。信頼の操作は利用者が行います。hooksの信頼を迂回するオプションは使いません。
+
+## 4. 最後の報告は短く
+
+導入・起動・選択した連動先・自動起動の結果と、未確認があればその内容を伝えます。Claude Code を使う場合は「新しいセッションを開く」、Codex と連動する場合は手順3の操作と理由を必ず案内してください。OSの管理者承認など避けられなかった操作がある場合は、その理由を説明します。
 
 参考：[WinGetの導入オプション](https://learn.microsoft.com/en-us/windows/package-manager/winget/install)、[Codex hooksと信頼](https://developers.openai.com/codex/hooks)。プランによる上限は変わるため、無料プランでの導入可否は断定せず、現在の利用状況に応じて案内します。

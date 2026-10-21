@@ -25,7 +25,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install.ps1
 
 Claude Code の hooks は既定で導入時に登録します（不要なら `-NoClaude`）。Codex の Windows / WSL の hooks とログイン時の自動起動は、導入時の質問で選べます。他の hooks は保ったまま、このペットの登録だけを追加・更新します。
 
-導入後は Claude Code / Codex の新しいセッションを開いてください。Codex で必要な場合は `/hooks` から登録内容を確認して信頼してください。通常のチャット画面だけでは作業状態は連動しません。
+導入後は Claude Code の新しいセッションを開いてください。通常のチャット画面だけでは作業状態は連動しません。
+
+### 導入後の必須ステップ：Codex の hooks を信頼する
+
+Codex と連動する場合は、導入のあと、Codex で `/hooks` を開き、ペット用の5つ（UserPromptSubmit・PreToolUse・PermissionRequest・PostToolUse・Stop）を信頼し、新しいセッションを始めてください。
+Codex は信頼していない hooks を実行しないため、信頼しないと連動しません。
+WSL の Codex を使う人も、WSL 側の Codex で同じ手順を行ってください。
 
 ## キャラと設定
 
